@@ -26,8 +26,8 @@ class ExcelLoader:
 
     def get_sheet_names(self, file_path: Union[str, Path]) -> List[str]:
         path = Path(file_path)
-        excel_file = pd.ExcelFile(path)
-        return excel_file.sheet_names
+        with pd.ExcelFile(path) as excel_file:
+            return excel_file.sheet_names
 
     def read_sheet(self, file_path: Union[str, Path], sheet_name: str) -> pd.DataFrame:
         path = Path(file_path)
@@ -39,6 +39,13 @@ class ExcelLoader:
         sheet_names: List[str]
     ) -> Dict[str, pd.DataFrame]:
         result: Dict[str, pd.DataFrame] = {}
+        available_sheets = {
+            name.strip().casefold(): name
+            for name in self.get_sheet_names(file_path)
+        }
         for sheet_name in sheet_names:
-            result[sheet_name] = self.read_sheet(file_path, sheet_name)
+            actual_name = available_sheets.get(sheet_name.strip().casefold())
+            if actual_name is None:
+                continue
+            result[sheet_name] = self.read_sheet(file_path, actual_name)
         return result

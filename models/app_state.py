@@ -8,6 +8,8 @@ class AppState:
     ts_file_paths: List[str] = field(default_factory=list)
     matched_ts_files: List[str] = field(default_factory=list)
     unmatched_ts_files: List[str] = field(default_factory=list)
+    source_metadata: Dict[str, Any] = field(default_factory=dict)
+    diagnostics: List[str] = field(default_factory=list)
 
     ttmt_data: Dict[str, Any] = field(default_factory=dict)
     ts_data: Dict[str, Any] = field(default_factory=dict)

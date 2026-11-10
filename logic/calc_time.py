@@ -46,6 +46,10 @@ def parse_datetime(value: Any) -> Optional[datetime]:
     text = str(value).strip()
     if not text:
         return None
+    try:
+        return datetime.fromisoformat(text)
+    except ValueError:
+        pass
     for fmt in (
         "%Y-%m-%d %H:%M:%S",
         "%Y-%m-%d %H:%M",
